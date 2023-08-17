@@ -22,8 +22,14 @@ class Board
     end
     puts (1..7).to_a.join(' ')
   end
-  def update_board(column, symbol)
+
+  def update_board(row, column, symbol)
+    @grid[row][column] = symbol
   end
+
+  def next_available_row(column)
+  end
+  
 end
 
 class Game

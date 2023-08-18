@@ -46,14 +46,36 @@ class Board
     column_full
   end
 
-  def check_diagonals
+  def check_diagonals(symbol)
+  
   end
 
-  def check_verticals
+  #each column has 4 vertical sections to check
+  def check_verticals(symbol)
+    rows = (0..3)
+    columns = (0..5)
+    rows.each do |row|
+      columns.each do |column|
+        section = @grid[row..row + 3][column]
+        return true if section.all? { |chip| chip == symbol }
+      end
+    end
+    false
   end
 
-  def check_horizontals
+  #each row has 4 sections to check
+  def check_horizontals(symbol)
+    rows = (0..5)
+    columns = (0..3)
+    rows.each do |row|
+      columns.each do |column|
+        section = @grid[row][column..column + 3]
+        return true if section.all? { |chip| chip == symbol }
+      end
+    end
+    false
   end
+
 end
 
 class Game

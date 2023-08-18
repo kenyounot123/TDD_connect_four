@@ -110,7 +110,15 @@ describe Board do
         current_board[5][3] = white_circle
         current_board[5][4] = white_circle
         current_board[5][5] = white_circle
-        expect(board_horizontal.check_horizontals).to be(true)
+        expect(board_horizontal.check_horizontals(white_circle)).to be(true)
+      end
+      it 'returns false if not the same symbol' do 
+        current_board = board_horizontal.instance_variable_get(:@grid)
+        current_board[5][2] = white_circle
+        current_board[5][3] = black_circle
+        current_board[5][4] = white_circle
+        current_board[5][5] = white_circle
+        expect(board_horizontal.check_horizontals(white_circle)).to be(false)
       end
     end
 
@@ -124,7 +132,15 @@ describe Board do
         current_board[4][3] = white_circle
         current_board[3][4] = white_circle
         current_board[2][5] = white_circle
-        expect(board_diagonal.check_diagonals).to be(true)
+        expect(board_diagonal.check_diagonals(white_circle)).to be(true)
+      end
+      it 'returns false if not the same symbol' do 
+        current_board = board_horizontal.instance_variable_get(:@grid)
+        current_board[5][2] = white_circle
+        current_board[5][3] = black_circle
+        current_board[5][4] = white_circle
+        current_board[5][5] = white_circle
+        expect(board_diagonal.check_diagonals(white_circle)).to be(false)
       end
     end
   end
@@ -137,7 +153,15 @@ describe Board do
         current_board[3][3] = white_circle
         current_board[4][3] = white_circle
         current_board[5][3] = white_circle
-        expect(board_vertical.check_verticals).to be(true)
+        expect(board_vertical.check_verticals(white_circle)).to be(true)
+      end
+      it 'returns false if not the same symbol' do 
+        current_board = board_horizontal.instance_variable_get(:@grid)
+        current_board[5][2] = white_circle
+        current_board[5][3] = black
+        current_board[5][4] = white_circle
+        current_board[5][5] = white_circle
+        expect(board_vertical.check_verticals(white_circle)).to be(false)
       end
     end
   end

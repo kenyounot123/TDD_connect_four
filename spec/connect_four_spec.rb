@@ -1,6 +1,21 @@
 require_relative '../lib/connect_four'
 
 describe Game do
+  let(:white_circle) { described_class.new.white_circle }
+  let(:black_circle) { described_class.new.black_circle }
+  let(:empty_circle) { described_class.new.empty_circle }
+  describe '#create_player' do 
+    subject(:game) { described_class.new}
+    it 'creates a player with the correct name and symbol' do
+      player = game.create_player('Bob', white_circle)
+      expect(player).to be_a(Player)
+      expect(player.name).to eq('Bob')
+      expect(player.symbol).to eq(white_circle)
+    end
+  end
+
+  describe '#player_turn' do 
+  end
   
 end
 
@@ -8,7 +23,7 @@ end
 describe Board do
   let(:white_circle) { described_class.new.white_circle }
   let(:black_circle) { described_class.new.black_circle }
-  let(:empty_circle) { described_class.new.empty_circle}
+  let(:empty_circle) { described_class.new.empty_circle }
 
   describe '#initialize' do 
     subject(:board) { described_class.new }
@@ -135,7 +150,7 @@ describe Board do
         expect(board_diagonal.check_diagonals(white_circle)).to be(true)
       end
       it 'returns false if not the same symbol' do 
-        current_board = board_horizontal.instance_variable_get(:@grid)
+        current_board = board_diagonal.instance_variable_get(:@grid)
         current_board[5][2] = white_circle
         current_board[5][3] = black_circle
         current_board[5][4] = white_circle
@@ -156,9 +171,9 @@ describe Board do
         expect(board_vertical.check_verticals(white_circle)).to be(true)
       end
       it 'returns false if not the same symbol' do 
-        current_board = board_horizontal.instance_variable_get(:@grid)
+        current_board = board_vertical.instance_variable_get(:@grid)
         current_board[5][2] = white_circle
-        current_board[5][3] = black
+        current_board[5][3] = black_circle
         current_board[5][4] = white_circle
         current_board[5][5] = white_circle
         expect(board_vertical.check_verticals(white_circle)).to be(false)

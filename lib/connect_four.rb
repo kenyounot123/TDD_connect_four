@@ -47,7 +47,24 @@ class Board
   end
 
   def check_diagonals(symbol)
-  
+    #check bottom left to top right diagonals
+    #check bottom right to top left diagonals
+    rows = (0..2)
+    columns = (0..3)
+    rows.each do |row|
+      columns.each do |column|
+        section = (0..3).map { |i| @grid[row + i][column + i] }
+        return true if section.all? { |chip| chip == symbol }
+      end
+    end
+
+    rows.each do |row|
+      columns.each do |column|
+        section = (0..3).map { |i| @grid[row + 3 - i][column + i] }
+        return true if section.all? { |chip| chip == symbol }
+      end
+    end
+    false
   end
 
   #each column has 4 vertical sections to check
@@ -56,7 +73,7 @@ class Board
     columns = (0..5)
     rows.each do |row|
       columns.each do |column|
-        section = @grid[row..row + 3][column]
+        section = @grid[row..row + 3].map { |consecutive_row| consecutive_row[column]}
         return true if section.all? { |chip| chip == symbol }
       end
     end
@@ -75,7 +92,6 @@ class Board
     end
     false
   end
-
 end
 
 class Game
@@ -88,15 +104,25 @@ class Game
     Rules are simple, connect four of the same colored chip to win.
     Four in a row, vertically, horizontally, or diagonally all work!
 
+    You will be playing against another player while taking turns to play a piece.
     To play a piece, type in which column you would like to drop your chip in,
     first column being (1).
 
     HEREDOC
   end
 
+  def create_player(name, symbol)
+    Player.new(name, symbol)
+  end
+
 end
 
 class Player
+  attr_accessor :name, :symbol
+  def initialize(name, symbol)
+    @symbol = symbol
+    @name = name
+  end
 end
 
 

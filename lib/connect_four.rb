@@ -45,6 +45,15 @@ class Board
     return true if next_available_row(column) == -1
     column_full
   end
+
+  def check_diagonals
+  end
+
+  def check_verticals
+  end
+
+  def check_horizontals
+  end
 end
 
 class Game

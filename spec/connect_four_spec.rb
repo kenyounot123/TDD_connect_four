@@ -100,5 +100,46 @@ describe Board do
       end
     end
   end
+
+  describe '#check_horizontals' do
+  subject(:board_horizontal) { described_class.new }
+    context 'when checking for horizontal win condition' do
+      it 'returns true if four in a row horizontally are the same symbol' do 
+        current_board = board_horizontal.instance_variable_get(:@grid)
+        current_board[5][2] = white_circle
+        current_board[5][3] = white_circle
+        current_board[5][4] = white_circle
+        current_board[5][5] = white_circle
+        expect(board_horizontal.check_horizontals).to be(true)
+      end
+    end
+
+  end
+  describe '#check_diagonals' do
+  subject(:board_diagonal) { described_class.new }
+    context 'when checking for diagonal win condition' do
+      it 'returns true if four in a row diagonally are the same symbol' do 
+        current_board = board_diagonal.instance_variable_get(:@grid)
+        current_board[5][2] = white_circle
+        current_board[4][3] = white_circle
+        current_board[3][4] = white_circle
+        current_board[2][5] = white_circle
+        expect(board_diagonal.check_diagonals).to be(true)
+      end
+    end
+  end
+  describe '#check_verticals' do
+    subject(:board_vertical) { described_class.new }
+    context 'when checking for vertically win condition' do
+      it 'returns true if four in a row vertically are the same symbol' do 
+        current_board = board_vertical.instance_variable_get(:@grid)
+        current_board[2][3] = white_circle
+        current_board[3][3] = white_circle
+        current_board[4][3] = white_circle
+        current_board[5][3] = white_circle
+        expect(board_vertical.check_verticals).to be(true)
+      end
+    end
+  end
   
 end

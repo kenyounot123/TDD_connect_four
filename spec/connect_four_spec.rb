@@ -68,8 +68,35 @@ describe Board do
       end
       it 'returns the available row number' do 
         second_row = 4
-        result = board_row.next_available_row(3)
+        third_column = 2
+        result = board_row.next_available_row(third_column)
         expect(result).to eq(second_row)
+      end
+    end
+  end
+
+  describe '#column_full?' do
+    subject(:board_column) { described_class.new }
+    context 'when given a valid column as argument' do
+      it 'returns true if column is full' do 
+        current_board = board_column.instance_variable_get(:@grid)
+        current_board[0][3] = white_circle
+        current_board[1][3] = black_circle
+        current_board[2][3] = white_circle
+        current_board[3][3] = black_circle
+        current_board[4][3] = white_circle
+        current_board[5][3] = black_circle
+        expect(board_column.column_full?(3)).to be(true)
+      end
+
+      it 'returns false if column is not full' do
+        current_board = board_column.instance_variable_get(:@grid)
+        current_board[1][3] = black_circle
+        current_board[2][3] = white_circle
+        current_board[3][3] = black_circle
+        current_board[4][3] = white_circle
+        current_board[5][3] = black_circle
+        expect(board_column.column_full?(3)).to be(false)
       end
     end
   end

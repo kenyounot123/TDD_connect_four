@@ -9,6 +9,8 @@ module Symbols
     "\u25cb"
   end
 end
+
+#Make sure that when getting user input on the column, we have to - 1 to it.
 class Board
   include Symbols
   attr_reader :grid
@@ -28,8 +30,21 @@ class Board
   end
 
   def next_available_row(column)
+    available_row = 0
+    for row in (0...6)
+      if @grid[row][column] != empty_circle
+        available_row = row - 1 
+        break
+      end
+    end
+    available_row
   end
   
+  def column_full?(column)
+    column_full = false
+    return true if next_available_row(column) == -1
+    column_full
+  end
 end
 
 class Game

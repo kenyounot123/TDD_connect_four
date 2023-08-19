@@ -110,9 +110,38 @@ class Game
 
     HEREDOC
   end
+  def initialize
+    @game_board = Board.new()
+    @player_one = Player.new(nil, white_circle)
+    @player_two = Player.new(nil, black_circle)
+  end
 
-  def create_player(name, symbol)
-    Player.new(name, symbol)
+  #the only user input there will be is for choosing column and inputting name
+  #will return validated user input
+  def validate_user_input
+
+  end
+
+  def player_turn
+  end
+
+  def game_start
+    puts intro_message
+    set_player_name
+    player_turn
+
+
+  end
+
+  def prompt_player_name(player_number)
+    puts "Please enter player #{player_number} name"
+    player_name = gets.chomp
+    player_name
+  end
+    
+  def set_player_name
+    @player_one.name = prompt_player_name(1)
+    @player_two.name = prompt_player_name(2)
   end
 
 end

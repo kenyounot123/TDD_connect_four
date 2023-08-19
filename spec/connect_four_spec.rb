@@ -4,17 +4,20 @@ describe Game do
   let(:white_circle) { described_class.new.white_circle }
   let(:black_circle) { described_class.new.black_circle }
   let(:empty_circle) { described_class.new.empty_circle }
-  describe '#create_player' do 
-    subject(:game) { described_class.new}
-    it 'creates a player with the correct name and symbol' do
-      player = game.create_player('Bob', white_circle)
-      expect(player).to be_a(Player)
-      expect(player.name).to eq('Bob')
-      expect(player.symbol).to eq(white_circle)
-    end
-  end
 
-  describe '#player_turn' do 
+  describe '#prompt_player_name' do 
+    subject(:game) { described_class.new }
+    before do
+      allow(game).to receive(:gets).and_return('Bob')
+    end
+    it 'returns player name properly' do
+      player_name = game.prompt_player_name(1)
+      expect(player_name).to eq('Bob')
+    end
+    it 'outputs correct message given an argument' do
+      message = "Please enter player 1 name\n"
+      expect{ game.prompt_player_name(1) }.to output(message).to_stdout
+    end
   end
   
 end
@@ -180,5 +183,5 @@ describe Board do
       end
     end
   end
-  
 end
+

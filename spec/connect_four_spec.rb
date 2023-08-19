@@ -4,13 +4,14 @@ describe Game do
   let(:white_circle) { described_class.new.white_circle }
   let(:black_circle) { described_class.new.black_circle }
   let(:empty_circle) { described_class.new.empty_circle }
-
+  
   describe '#prompt_player_name' do 
-    subject(:game) { described_class.new }
+  subject(:game) { described_class.new }
     before do
       allow(game).to receive(:gets).and_return('Bob')
     end
     it 'returns player name properly' do
+      allow(game).to receive(:puts)
       player_name = game.prompt_player_name(1)
       expect(player_name).to eq('Bob')
     end
@@ -28,7 +29,26 @@ describe Game do
       expect(player_game).to receive(:prompt_player_name).twice
       player_game.set_player_name
     end
+  end
 
+  describe '#get_player_move' do 
+    subject(:game) { described_class.new }
+    let(:player) { instance_double("Player", name: "Bob") }
+    before do
+      allow(game).to receive(:gets).and_return('Bob')
+      allow(game).to receive(:validate_player_move).and_return(true)
+    end
+    it 'outputs correct message given an argument' do 
+      message = "Bob which column you would like to place your piece in\n"
+      expect{ game.get_player_move(player) }.to output(message).to_stdout
+    end
+    it 'sends message to call #validate_player_move' do
+      expect(game).to receive(:validate_player_move)
+      game.get_player_move(player)
+    end
+  end
+
+  describe '#validate_player_move' do 
   end
   
 end
@@ -63,8 +83,8 @@ describe Board do
       end
       it 'updates the cell on the board in the first row' do 
         updated_board = board_updated.instance_variable_get(:@grid)
-        first_row = 6 - 1
-        fifth_column = 5 - 1
+        first_row = 5
+        fifth_column = 4
         result = updated_board[first_row][fifth_column]
         expect(result).to eq(white_circle)
       end
@@ -75,9 +95,9 @@ describe Board do
         board_updated.update_board(4, 4, white_circle)
       end
       it 'updates the cell on top of the first row chip' do 
-        first_row = 6 - 1
-        second_row = 5 - 1
-        fifth_column = 5 - 1
+        first_row = 5
+        second_row = 4
+        fifth_column = 4
         updated_board = board_updated.instance_variable_get(:@grid)
         updated_board[first_row][fifth_column] = white_circle
         result = updated_board[second_row][fifth_column] 
@@ -90,7 +110,7 @@ describe Board do
     subject(:board_row) { described_class.new }
     context 'when given a valid column as argument' do
       before do
-        first_row = 6 - 1
+        first_row = 5
         third_column = 2
         current_board = board_row.instance_variable_get(:@grid)
         current_board[first_row][third_column] = white_circle

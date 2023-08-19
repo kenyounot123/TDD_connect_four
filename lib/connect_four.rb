@@ -31,6 +31,9 @@ class Board
 
   def next_available_row(column)
     available_row = 0
+    if @grid[5][column] == empty_circle
+      available_row = 5
+    end
     for row in (0...6)
       if @grid[row][column] != empty_circle
         available_row = row - 1 
@@ -114,20 +117,35 @@ class Game
     @game_board = Board.new()
     @player_one = Player.new(nil, white_circle)
     @player_two = Player.new(nil, black_circle)
+    @turn = 1
   end
 
   #the only user input there will be is for choosing column and inputting name
   #will return validated user input
-  def validate_user_input
-
+  def validate_player_move(move)
+    until move.to_i.between?(1,7)
+      puts "Please type in a valid column number" 
+      move = gets.chomp
+    end
+    move.to_i
   end
 
   def player_turn
+    if @turn % 2 
+      current_player = @player_two
+    else
+      current_player = @player_one
+    end
+    move = get_player_move(current_player)
+    column = move - 1
+    @game_board.update_board(5, column, current_player.symbol)
+    @game_board.display_board
   end
 
   def game_start
     puts intro_message
     set_player_name
+    @game_board.display_board
     player_turn
   end
 
@@ -142,6 +160,16 @@ class Game
     @player_two.name = prompt_player_name(2)
   end
 
+  def get_player_move(player)
+    puts "#{player.name} which column you would like to place your piece in"
+    player_move = gets.chomp
+    validate_player_move(player_move)
+  end
+
+  def next_turn
+    @turn += 1
+    @turn
+  end
 end
 
 class Player
@@ -152,7 +180,6 @@ class Player
   end
 end
 
+# Game.new.game_start
 
 
-grid = Board.new
-grid.display_board

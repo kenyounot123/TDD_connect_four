@@ -129,8 +129,6 @@ class Game
     puts intro_message
     set_player_name
     player_turn
-
-
   end
 
   def prompt_player_name(player_number)

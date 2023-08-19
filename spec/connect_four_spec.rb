@@ -19,6 +19,17 @@ describe Game do
       expect{ game.prompt_player_name(1) }.to output(message).to_stdout
     end
   end
+
+  describe '#set_player_name' do
+    subject(:player_game) { described_class.new }
+    let(:player_instance) { instance_double(Player) }
+    it 'sends message to call prompt_player_name twice' do
+      allow(player_instance).to receive(:name)
+      expect(player_game).to receive(:prompt_player_name).twice
+      player_game.set_player_name
+    end
+
+  end
   
 end
 

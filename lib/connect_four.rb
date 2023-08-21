@@ -1,9 +1,9 @@
 module Symbols
   def white_circle 
-    "\u25EF"
+    "\u26EF"
   end
   def black_circle
-    "\u26AB"
+    "\u25C9"
   end
   def empty_circle
     "\u25cb"
@@ -72,7 +72,7 @@ class Board
 
   #each column has 4 vertical sections to check
   def check_verticals(symbol)
-    rows = (0..3)
+    rows = (0..2)
     columns = (0..5)
     rows.each do |row|
       columns.each do |column|
@@ -135,16 +135,14 @@ class Game
   end
 
   def player_turn
-    if @turn % 2 
-      current_player = @player_two
+    if @turn % 2 == 0
+      @current_player = @player_two
     else
-      current_player = @player_one
+      @current_player = @player_one
     end
-    move = get_player_move(current_player)
+    move = get_player_move(@current_player)
     column = move - 1
-    @game_board.update_board(5, column, current_player.symbol)
-    # if game_over?(current_player.symbol)
-
+    @game_board.update_board(@game_board.next_available_row(column), column, @current_player.symbol)
     @game_board.display_board
   end
 
@@ -154,8 +152,14 @@ class Game
     @game_board.display_board
     loop do 
       player_turn
-      break if game_over?
+      next_turn
+      break if game_over?(@current_player.symbol)
     end
+    display_winner(@current_player) 
+  end
+  
+  def display_winner(player)
+    puts "Congratulations #{player.name}, you win!"
   end
 
   def prompt_player_name(player_number)
@@ -170,7 +174,7 @@ class Game
   end
 
   def get_player_move(player)
-    puts "#{player.name} which column you would like to place your piece in"
+    puts "#{player.name} which column would you like to place your piece in"
     player_move = gets.chomp
     validate_player_move(player_move)
   end

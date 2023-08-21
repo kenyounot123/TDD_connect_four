@@ -49,8 +49,25 @@ describe Game do
   end
 
   describe '#validate_player_move' do 
+    subject(:game_validate) { described_class.new }
+    context 'with valid input' do
+      it 'returns the valid move' do
+        player_input_move = '5'
+        result = game_validate.validate_player_move(player_input_move)
+        expect(result).to eq(5)
+      end
+    end
+    context 'with invalid input followed by valid input' do 
+      it 'exits the loop and returns the valid move'
+        allow(game_validate).to receive(:puts)
+        allow(game_validate).to receive(:gets).and_return("3\n")
+        player_input_move = '20'
+        result = game_validate.validate_player_move(player_input_move)
+        expect(result).to eq(3)
+      end
+    end
   end
-  
+  #add testing for validate player_move, next turn, player_turn
 end
 
 #Testing for the Board class will just check if updating the board / winning is correct

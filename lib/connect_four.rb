@@ -100,7 +100,7 @@ end
 class Game
   include Symbols
   def intro_message
-    <<~HEREDOC 
+    puts <<~HEREDOC 
 
     This is Connect four and it will be played in the console. 
 
@@ -130,6 +130,10 @@ class Game
     move.to_i
   end
 
+  def game_over?(symbol)
+    @game_board.check_diagonals(symbol) ||  @game_board.check_horizontals(symbol) ||  @game_board.check_verticals(symbol)
+  end
+
   def player_turn
     if @turn % 2 
       current_player = @player_two
@@ -139,14 +143,19 @@ class Game
     move = get_player_move(current_player)
     column = move - 1
     @game_board.update_board(5, column, current_player.symbol)
+    # if game_over?(current_player.symbol)
+
     @game_board.display_board
   end
 
   def game_start
-    puts intro_message
+    intro_message
     set_player_name
     @game_board.display_board
-    player_turn
+    loop do 
+      player_turn
+      break if game_over?
+    end
   end
 
   def prompt_player_name(player_number)
@@ -170,6 +179,7 @@ class Game
     @turn += 1
     @turn
   end
+
 end
 
 class Player
@@ -180,6 +190,6 @@ class Player
   end
 end
 
-# Game.new.game_start
+Game.new.game_start
 
 

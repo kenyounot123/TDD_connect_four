@@ -6,7 +6,7 @@ describe Game do
   let(:empty_circle) { described_class.new.empty_circle }
   
   describe '#prompt_player_name' do 
-  subject(:game) { described_class.new }
+    subject(:game) { described_class.new }
     before do
       allow(game).to receive(:gets).and_return('Bob')
     end
@@ -58,7 +58,7 @@ describe Game do
       end
     end
     context 'with invalid input followed by valid input' do 
-      it 'exits the loop and returns the valid move'
+      it 'exits the loop and returns the valid move' do
         allow(game_validate).to receive(:puts)
         allow(game_validate).to receive(:gets).and_return("3\n")
         player_input_move = '20'
@@ -67,7 +67,17 @@ describe Game do
       end
     end
   end
-  #add testing for validate player_move, next turn, player_turn
+
+  describe '#next_turn' do 
+    subject(:game_turn) { described_class.new }
+    context 'when turn is updated' do 
+      it 'increments the turn counter' do 
+        initial_turn = game_turn.instance_variable_get(:@turn)
+        expect {game_turn.next_turn}.to change {game_turn.instance_variable_get(:@turn)}.by(1)
+      end
+    end
+  end
+ 
 end
 
 #Testing for the Board class will just check if updating the board / winning is correct

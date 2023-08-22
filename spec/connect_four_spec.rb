@@ -39,7 +39,7 @@ describe Game do
       allow(game).to receive(:validate_player_move).and_return(true)
     end
     it 'outputs correct message given an argument' do 
-      message = "Bob which column you would like to place your piece in\n"
+      message = "Bob which column would you like to place your piece in\n"
       expect{ game.get_player_move(player) }.to output(message).to_stdout
     end
     it 'sends message to call #validate_player_move' do
@@ -76,6 +76,33 @@ describe Game do
         expect {game_turn.next_turn}.to change {game_turn.instance_variable_get(:@turn)}.by(1)
       end
     end
+  end
+
+  describe '#player_turn' do 
+    let(:player_one) { instance_double(Player) }
+    let(:player_two) { instance_double(Player) }
+    subject(:new_game) { described_class.new }
+    it 'gets player move and sends message to call update_board' do
+      board = new_game.instance_variable_get(:@game_board)
+      allow(board).to receive(:display_board)
+      allow(new_game).to receive(:get_player_move).and_return(3)
+      allow(board).to receive(:next_available_row).and_return(5)
+      allow(player_one).to receive(:symbol).and_return(white_circle)
+      allow(player_two).to receive(:symbol).and_return(black_circle)
+      turn = new_game.instance_variable_get(:@turn)
+      new_game.instance_variable_set(:@current_player, player_one)
+      expect(board).to receive(:update_board).with(5, 2, white_circle).once
+      new_game.player_turn
+    end
+    it 'calls display_board properly' do
+      expect(board).to receive(:display_board).once
+    end
+    it 'switches players correctly' do
+    end
+
+  end
+
+  describe '#game_start' do 
   end
  
 end

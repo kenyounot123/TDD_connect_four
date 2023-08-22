@@ -194,6 +194,6 @@ class Player
   end
 end
 
-Game.new.game_start
+# Game.new.game_start
 
 

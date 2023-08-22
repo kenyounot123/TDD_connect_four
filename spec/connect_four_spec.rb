@@ -82,24 +82,42 @@ describe Game do
     let(:player_one) { instance_double(Player) }
     let(:player_two) { instance_double(Player) }
     subject(:new_game) { described_class.new }
+    before do
+      allow(new_game).to receive(:get_player_move).and_return(3)
+      allow(player_one).to receive(:symbol).and_return(white_circle)
+      allow(player_two).to receive(:symbol).and_return(black_circle)
+    end
     it 'gets player move and sends message to call update_board' do
       board = new_game.instance_variable_get(:@game_board)
       allow(board).to receive(:display_board)
-      allow(new_game).to receive(:get_player_move).and_return(3)
       allow(board).to receive(:next_available_row).and_return(5)
-      allow(player_one).to receive(:symbol).and_return(white_circle)
-      allow(player_two).to receive(:symbol).and_return(black_circle)
-      turn = new_game.instance_variable_get(:@turn)
       new_game.instance_variable_set(:@current_player, player_one)
       expect(board).to receive(:update_board).with(5, 2, white_circle).once
       new_game.player_turn
     end
     it 'calls display_board properly' do
+      board = new_game.instance_variable_get(:@game_board)
       expect(board).to receive(:display_board).once
+      new_game.player_turn
     end
-    it 'switches players correctly' do
+    context 'when turn is odd' do
+      it 'sets @current_player to be @player_one' do
+        new_game.instance_variable_set(:@turn, 1)
+        new_game.instance_variable_set(:@player_one, player_one)
+        new_game.player_turn
+        expect(new_game.instance_variable_get(:@current_player)).to eq(player_one)
+      end
+    end
+    context 'when turn is even' do 
+      it 'sets @current_player to be @player_two' do
+        new_game.instance_variable_set(:@turn, 2)
+        new_game.instance_variable_set(:@player_two, player_two)
+        new_game.player_turn
+        expect(new_game.instance_variable_get(:@current_player)).to eq(player_two)
+      end
     end
 
+    
   end
 
   describe '#game_start' do 

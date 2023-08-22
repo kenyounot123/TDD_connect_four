@@ -130,6 +130,31 @@ describe Game do
   end
 
   describe '#game_over?' do 
+    subject(:winner_game) { described_class.new }
+    context 'when a win condition is satisfied' do 
+      before do
+        game_board = winner_game.instance_variable_get(:@game_board)
+        allow(game_board).to receive(:check_diagonals).and_return(true) 
+        allow(game_board).to receive(:check_horizontals).and_return(false) 
+        allow(game_board).to receive(:check_verticals).and_return(false) 
+      end
+      it 'returns true' do
+        expect(winner_game.game_over?(white_circle)).to be(true)
+      end
+    end
+    context 'when win condition is not met' do 
+      before do
+        game_board = winner_game.instance_variable_get(:@game_board)
+        allow(game_board).to receive(:check_diagonals).and_return(false) 
+        allow(game_board).to receive(:check_horizontals).and_return(false) 
+        allow(game_board).to receive(:check_verticals).and_return(false) 
+      end
+      it 'returns false' do 
+        expect(winner_game.game_over?(white_circle)).to be(false)
+      end
+    end
+
+
   end
  
   describe '#display_winner' do

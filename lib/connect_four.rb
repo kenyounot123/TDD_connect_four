@@ -153,11 +153,14 @@ class Game
     loop do 
       player_turn
       next_turn
-      break if game_over?(@current_player.symbol)
+      break if game_over?(@current_player.symbol) || game_draw?
     end
     display_winner(@current_player) 
   end
-  
+  def game_draw?
+    @turn == 42 && game_over?(white_circle) == false && game_over?(black_circle) == false
+  end
+
   def display_winner(player)
     puts "Congratulations #{player.name}, you win!"
   end
@@ -194,6 +197,6 @@ class Player
   end
 end
 
-# Game.new.game_start
+Game.new.game_start
 
 

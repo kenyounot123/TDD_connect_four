@@ -92,7 +92,7 @@ describe Game do
       allow(board).to receive(:display_board)
       allow(board).to receive(:next_available_row).and_return(5)
       new_game.instance_variable_set(:@current_player, player_one)
-      expect(board).to receive(:update_board).with(5, 2, white_circle).once
+      expect(board).to have_received(:update_board).with(5, 2, white_circle).once
       new_game.player_turn
     end
     it 'calls display_board properly' do
@@ -121,14 +121,6 @@ describe Game do
       end
     end
   end
-
-  describe '#game_start' do 
-    it 'calls #intro_message once' do
-    end
-    it 'calls #set_player_name once' do
-    end
-  end
-
   describe '#game_over?' do 
     subject(:winner_game) { described_class.new }
     context 'when a win condition is satisfied' do 
@@ -153,9 +145,8 @@ describe Game do
         expect(winner_game.game_over?(white_circle)).to be(false)
       end
     end
-
-
   end
+  
  
   describe '#display_winner' do
     subject(:game_winner) { described_class.new }

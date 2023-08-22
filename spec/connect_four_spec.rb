@@ -102,6 +102,8 @@ describe Game do
     end
     context 'when turn is odd' do
       it 'sets @current_player to be @player_one' do
+        board = new_game.instance_variable_get(:@game_board)
+        allow(board).to receive(:display_board)
         new_game.instance_variable_set(:@turn, 1)
         new_game.instance_variable_set(:@player_one, player_one)
         new_game.player_turn
@@ -110,19 +112,36 @@ describe Game do
     end
     context 'when turn is even' do 
       it 'sets @current_player to be @player_two' do
+        board = new_game.instance_variable_get(:@game_board)
+        allow(board).to receive(:display_board)
         new_game.instance_variable_set(:@turn, 2)
         new_game.instance_variable_set(:@player_two, player_two)
         new_game.player_turn
         expect(new_game.instance_variable_get(:@current_player)).to eq(player_two)
       end
     end
-
-    
   end
 
   describe '#game_start' do 
+    it 'calls #intro_message once' do
+    end
+    it 'calls #set_player_name once' do
+    end
+  end
+
+  describe '#game_over?' do 
   end
  
+  describe '#display_winner' do
+    subject(:game_winner) { described_class.new }
+    let(:player) { instance_double(Player) }
+    it 'prints message using argument given' do
+      player_name = 'Steven'
+      allow(player).to receive(:name).and_return(player_name)
+      winner_message = "Congratulations Steven, you win!\n"
+      expect{game_winner.display_winner(player)}.to output(winner_message).to_stdout
+    end
+  end
 end
 
 #Testing for the Board class will just check if updating the board / winning is correct

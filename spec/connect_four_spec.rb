@@ -92,7 +92,7 @@ describe Game do
       allow(board).to receive(:display_board)
       allow(board).to receive(:next_available_row).and_return(5)
       new_game.instance_variable_set(:@current_player, player_one)
-      expect(board).to have_received(:update_board).with(5, 2, white_circle).once
+      expect(board).to receive(:update_board).with(5, 2, white_circle).once
       new_game.player_turn
     end
     it 'calls display_board properly' do
@@ -146,7 +146,26 @@ describe Game do
       end
     end
   end
-  
+
+  describe '#game_draw?' do 
+    subject(:game_draw) { described_class.new }
+    it 'returns true if no win conditions are satisfied and @turn is 43' do 
+      game_draw.instance_variable_set(:@turn, 43)
+      allow(game_draw).to receive(:game_over?).and_return(false)
+      expect(game_draw.game_draw?).to be(true)
+    end
+    it 'returns false if @turn is less than 43' do
+      game_draw.instance_variable_set(:@turn, 23)
+      allow(game_draw).to receive(:game_over?).and_return(true)
+      expect(game_draw.game_draw?).to be(false)
+    end
+    it 'returns false if there is a winner' do
+      game_draw.instance_variable_set(:@turn, 43)
+      allow(game_draw).to receive(:game_over?).and_return(true)
+      expect(game_draw.game_draw?).to be(false)
+    end
+  end
+
  
   describe '#display_winner' do
     subject(:game_winner) { described_class.new }

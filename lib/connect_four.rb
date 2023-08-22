@@ -158,7 +158,7 @@ class Game
     display_winner(@current_player) 
   end
   def game_draw?
-    @turn == 42 && game_over?(white_circle) == false && game_over?(black_circle) == false
+    @turn == 43 && game_over?(white_circle) == false && game_over?(black_circle) == false
   end
 
   def display_winner(player)
@@ -197,6 +197,6 @@ class Player
   end
 end
 
-Game.new.game_start
+# Game.new.game_start
 
 
